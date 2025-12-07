@@ -90,8 +90,6 @@
                 max-height: 800px;
             }
         }
-
-        /* Skeleton Loading Styles */
         .skeleton {
             animation: skeleton-loading 1.5s infinite ease-in-out;
             background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
@@ -109,6 +107,37 @@
         @keyframes skeleton-loading-white {
             0% { background-position: 200% 0; }
             100% { background-position: -200% 0; }
+        }
+        .chart-container {
+            position: relative;
+            height: 400px;
+            width: 100%;
+        }
+        .chart-container-doughnut {
+            position: relative;
+            height: 400px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .modal-backdrop {
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        .modal-content {
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        .modal-content::-webkit-scrollbar {
+            width: 8px;
+        }
+        .modal-content::-webkit-scrollbar-track {
+            background: #f1f5f9;
+            border-radius: 10px;
+        }
+        .modal-content::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 10px;
         }
     </style>
 </head>
@@ -144,7 +173,6 @@
             </div>
         </div>
     </header>
-
 
     <main class="px-4 sm:px-6 lg:px-8 py-10">
         <div class="gradient-bg from-red-500 via-red-600 to-red-700 rounded-3xl shadow-2xl p-8 mb-10 text-white transform hover:scale-[1.01] transition">
@@ -328,7 +356,7 @@
                         <div class="facility-card bg-white rounded-3xl shadow-xl p-8 border-t-[6px] border-gray-400 hover:shadow-2xl">
                             <div class="flex flex-col items-center text-center">
                                 <div class="w-16 h-16 bg-gray-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <svg class="w-9 h-9 text-gray-600" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-bank2" viewBox="0 0 16 16">
+                                    <svg class="w-9 h-9 text-gray-600" xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
                                         <path d="M8.277.084a.5.5 0 0 0-.554 0l-7.5 5A.5.5 0 0 0 .5 6h1.875v7H1.5a.5.5 0 0 0 0 1h13a.5.5 0 1 0 0-1h-.875V6H15.5a.5.5 0 0 0 .277-.916zM12.375 6v7h-1.25V6zm-2.5 0v7h-1.25V6zm-2.5 0v7h-1.25V6zm-2.5 0v7h-1.25V6zM8 4a1 1 0 1 1 0-2 1 1 0 0 1 0 2M.5 15a.5.5 0 0 0 0 1h15a.5.5 0 1 0 0-1z"/>
                                     </svg>
                                 </div>
@@ -407,7 +435,6 @@
             </div>
         </div>
 
-        <!-- SECTION SHELTER & PENGUNGSI -->
         <div class="mb-10">
             <div class="flex items-center justify-between mb-6">
                 <h2 class="text-3xl font-black text-gray-900 flex items-center">
@@ -416,11 +443,10 @@
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                         </svg>
                     </div>
-                    Data Pengungsi
+                    Data Pengungsi & Shelter
                 </h2>
             </div>
 
-            <!-- Stat Cards Pengungsi -->
             <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-6">
                 <template x-if="isLoadingShelter">
                     <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
@@ -446,7 +472,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-sm font-bold mb-3 opacity-90">Total Pengungsi</h3>
+                                <h3 class="text-sm font-bold mb-3 opacity-90">Total Pengungsi (Jiwa)</h3>
                                 <p class="text-6xl font-black mb-2" x-text="shelterData.totalPengungsi.jiwa.toLocaleString('id-ID')"></p>
                                 <p class="text-xs font-semibold opacity-80 uppercase tracking-wide">Jiwa</p>
                             </div>
@@ -459,7 +485,7 @@
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                                     </svg>
                                 </div>
-                                <h3 class="text-xs font-bold text-indigo-600 mb-3 uppercase tracking-wide">Keluarga</h3>
+                                <h3 class="text-xs font-bold text-indigo-600 mb-3 uppercase tracking-wide">Kepala Keluarga</h3>
                                 <p class="text-5xl font-black text-indigo-600 mb-2" x-text="shelterData.totalPengungsi.kk.toLocaleString('id-ID')"></p>
                                 <p class="text-xs text-gray-500 font-semibold">KK</p>
                             </div>
@@ -507,9 +533,7 @@
                 </template>
             </div>
 
-            <!-- Charts Section -->
             <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <!-- Chart: Pengungsi per Kab/Kota -->
                 <div class="bg-white rounded-3xl shadow-2xl p-8">
                     <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
                         <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
@@ -529,7 +553,6 @@
                     </template>
                 </div>
 
-                <!-- Chart: Pengungsi berdasarkan Usia -->
                 <div class="bg-white rounded-3xl shadow-2xl p-8">
                     <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
                         <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
@@ -538,7 +561,7 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
                             </svg>
                         </div>
-                        Berdasarkan Usia
+                        Distribusi Usia
                     </h3>
                     <template x-if="isLoadingShelter">
                         <div class="skeleton h-64 rounded-2xl"></div>
@@ -550,7 +573,6 @@
                     </template>
                 </div>
 
-                <!-- Chart: Pengungsi Rentan -->
                 <div class="bg-white rounded-3xl shadow-2xl p-8">
                     <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
                         <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
@@ -699,6 +721,170 @@
             </div>
         </div>
 
+
+        <div class="mb-10">
+            <div class="flex items-center justify-between mb-6">
+                <h2 class="text-3xl font-black text-gray-900 flex items-center">
+                    <div class="w-10 h-10 bg-red-100 rounded-xl flex items-center justify-center mr-4">
+                        <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"/>
+                        </svg>
+                    </div>
+                    Layanan PMI
+                </h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5 mb-6">
+                <template x-if="isLoadingService">
+                    <div class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+                        <template x-for="i in 10" :key="i">
+                            <div class="bg-white rounded-3xl shadow-xl p-6 border-l-[6px] border-gray-300">
+                                <div class="skeleton w-12 h-12 rounded-xl mb-4"></div>
+                                <div class="skeleton h-4 w-32 mb-3 rounded"></div>
+                                <div class="skeleton h-10 w-20 mb-2 rounded"></div>
+                                <div class="skeleton h-3 w-24 mb-2 rounded"></div>
+                                <div class="skeleton h-3 w-28 rounded"></div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+
+                <template x-if="!isLoadingService">
+                    <div class="col-span-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-5">
+                        <template x-for="(service, idx) in serviceData" :key="service.id">
+                            <div class="stat-card bg-white rounded-3xl shadow-xl p-6 border-l-[6px] hover:shadow-2xl"
+                                :class="getServiceBorderClass(service.id)">
+                                <div class="flex items-center justify-between mb-3">
+                                    <div class="w-12 h-12 rounded-xl flex items-center justify-center"
+                                        :class="getServiceBgClass(service.id)">
+                                        <template x-if="service.id === 'pertolongan_pertama'">
+                                            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'evakuasi_korban'">
+                                            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'shelter'">
+                                            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'medis'">
+                                            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'tim_ambulans'">
+                                            <svg class="w-6 h-6 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path d="M9 17a2 2 0 11-4 0 2 2 0 014 0zM19 17a2 2 0 11-4 0 2 2 0 014 0z"/>
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16V6a1 1 0 00-1-1H4a1 1 0 00-1 1v10a1 1 0 001 1h1m8-1a1 1 0 01-1 1H9m4-1V8a1 1 0 011-1h2.586a1 1 0 01.707.293l3.414 3.414a1 1 0 01.293.707V16a1 1 0 01-1 1h-1m-6-1a1 1 0 001 1h1M5 17a2 2 0 104 0m-4 0a2 2 0 114 0m6 0a2 2 0 104 0m-4 0a2 2 0 114 0"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'dapur_umum'">
+                                            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'relief_distribusi'">
+                                            <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'wash'">
+                                            <svg class="w-6 h-6 text-cyan-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19.428 15.428a2 2 0 00-1.022-.547l-2.387-.477a6 6 0 00-3.86.517l-.318.158a6 6 0 01-3.86.517L6.05 15.21a2 2 0 00-1.806.547M8 4h8l-1 1v5.172a2 2 0 00.586 1.414l5 5c1.26 1.26.367 3.414-1.415 3.414H4.828c-1.782 0-2.674-2.154-1.414-3.414l5-5A2 2 0 009 10.172V5L8 4z"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'pemulihan_hubungan'">
+                                            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                            </svg>
+                                        </template>
+                                        <template x-if="service.id === 'dukungan_psikososial'">
+                                            <svg class="w-6 h-6 text-teal-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                            </svg>
+                                        </template>
+                                    </div>
+                                </div>
+                                <h3 class="text-xs font-bold text-gray-700 mb-2 uppercase tracking-wide line-clamp-2" x-text="service.value"></h3>
+                                <p class="text-4xl font-black text-gray-900 mb-1" x-text="service.penerimaManfaat.toLocaleString('id-ID')"></p>
+                                <p class="text-xs text-gray-500 font-semibold mb-2">Penerima Manfaat</p>
+                                <div class="flex items-center justify-between text-xs mb-3">
+                                    <span class="text-gray-600"><span class="font-bold" x-text="service.count"></span> Kegiatan</span>
+                                </div>
+                                <div class="pt-3 border-t border-gray-200">
+                                    <div class="flex items-center justify-between text-xs mb-3">
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 text-blue-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                                            </svg>
+                                            <span class="font-semibold" x-text="service.jenisKelamin.lakiLaki.toLocaleString('id-ID')"></span>
+                                        </div>
+                                        <div class="flex items-center">
+                                            <svg class="w-4 h-4 text-pink-500 mr-1" fill="currentColor" viewBox="0 0 20 20">
+                                                <path d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z"/>
+                                            </svg>
+                                            <span class="font-semibold" x-text="service.jenisKelamin.perempuan.toLocaleString('id-ID')"></span>
+                                        </div>
+                                    </div>
+                                    <template x-if="service.detail && hasDetailData(service.detail)">
+                                        <button @click="openDetailModal(service)" class="w-full px-4 py-2 bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700 text-white text-xs font-bold rounded-lg transition transform hover:scale-105 shadow-md">
+                                            Lihat Detail (<span x-text="countDetailItems(service.detail)"></span>)
+                                        </button>
+                                    </template>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                </template>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <div class="bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-red-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                            </svg>
+                        </div>
+                        Top Layanan PMI
+                    </h3>
+                    <template x-if="isLoadingService">
+                        <div class="skeleton h-96 rounded-2xl"></div>
+                    </template>
+                    <template x-if="!isLoadingService">
+                        <div class="chart-container">
+                            <canvas id="chartTopLayanan"></canvas>
+                        </div>
+                    </template>
+                </div>
+
+                <div class="bg-white rounded-3xl shadow-2xl p-8">
+                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
+                        <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                            </svg>
+                        </div>
+                        Distribusi Layanan
+                    </h3>
+                    <template x-if="isLoadingService">
+                        <div class="skeleton h-96 rounded-2xl"></div>
+                    </template>
+                    <template x-if="!isLoadingService">
+                        <div class="chart-container-doughnut">
+                            <canvas id="chartDistribusiLayanan"></canvas>
+                        </div>
+                    </template>
+                </div>
+            </div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-10">
             <div class="lg:col-span-2 bg-white rounded-3xl shadow-2xl p-8">
                 <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
@@ -829,6 +1015,172 @@
         </div>
     </footer>
 
+    <div x-show="showDetailModal" 
+         x-cloak
+         @click.self="showDetailModal = false"
+         class="fixed inset-0 z-50 flex items-center justify-center p-4 modal-backdrop"
+         style="display: none;">
+        <div class="bg-white rounded-3xl shadow-2xl max-w-4xl w-full modal-content p-8" @click.stop>
+            <div class="flex items-center justify-between mb-6">
+                <h3 class="text-2xl font-black text-gray-900" x-text="selectedService?.value"></h3>
+                <button @click="showDetailModal = false" class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-gray-100 transition">
+                    <svg class="w-6 h-6 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                    </svg>
+                </button>
+            </div>
+
+            <div class="space-y-6">
+                <template x-if="selectedService?.detail?.subLayanan && selectedService.detail.subLayanan.length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Sub Layanan 
+                            <span class="ml-2 text-sm font-black text-white bg-blue-500 px-3 py-1 rounded-full" x-text="selectedService.detail.subLayanan.length"></span>
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <template x-for="(item, idx) in selectedService.detail.subLayanan" :key="idx">
+                                <div class="bg-gradient-to-r from-blue-50 to-blue-100 rounded-xl p-5 border-l-4 border-blue-500">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                            <p class="text-2xl font-black text-blue-600" x-text="item.penerimaManfaat.toLocaleString('id-ID')"></p>
+                                            <p class="text-xs text-gray-600 mt-1">Penerima Manfaat (<span x-text="item.count"></span> kegiatan)</p>
+                                            <template x-if="item.jumlah">
+                                                <p class="text-xs text-gray-600 mt-1">
+                                                    Jumlah (<span x-text="item.jumlah"></span>)
+                                                </p>
+                                            </template>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.statusRujukan && selectedService.detail.statusRujukan.length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Status Rujukan
+                            <span class="ml-2 text-sm font-black text-white bg-green-500 px-3 py-1 rounded-full" x-text="selectedService.detail.statusRujukan.length"></span>
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <template x-for="(item, idx) in selectedService.detail.statusRujukan" :key="idx">
+                                <div class="bg-gradient-to-r from-green-50 to-green-100 rounded-xl p-5 border-l-4 border-green-500">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                            <p class="text-2xl font-black text-green-600" x-text="item.penerimaManfaat.toLocaleString('id-ID')"></p>
+                                            <p class="text-xs text-gray-600 mt-1">Penerima Manfaat (<span x-text="item.count"></span> kegiatan)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.saluranDistribusi && selectedService.detail.saluranDistribusi.length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Saluran Distribusi
+                            <span class="ml-2 text-sm font-black text-white bg-purple-500 px-3 py-1 rounded-full" x-text="selectedService.detail.saluranDistribusi.length"></span>
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <template x-for="(item, idx) in selectedService.detail.saluranDistribusi" :key="idx">
+                                <div class="bg-gradient-to-r from-purple-50 to-purple-100 rounded-xl p-5 border-l-4 border-purple-500">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                            <p class="text-2xl font-black text-purple-600" x-text="item.penerimaManfaat.toLocaleString('id-ID')"></p>
+                                            <p class="text-xs text-gray-600 mt-1">Penerima Manfaat (<span x-text="item.count"></span> kegiatan)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.saluranKegiatan && selectedService.detail.saluranKegiatan.length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Saluran Kegiatan
+                            <span class="ml-2 text-sm font-black text-white bg-amber-500 px-3 py-1 rounded-full" x-text="selectedService.detail.saluranKegiatan.length"></span>
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <template x-for="(item, idx) in selectedService.detail.saluranKegiatan" :key="idx">
+                                <div class="bg-gradient-to-r from-amber-50 to-amber-100 rounded-xl p-5 border-l-4 border-amber-500">
+                                    <div class="flex items-center justify-between">
+                                        <div class="flex-1">
+                                            <p class="text-sm font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                            <p class="text-2xl font-black text-amber-600" x-text="item.penerimaManfaat.toLocaleString('id-ID')"></p>
+                                            <p class="text-xs text-gray-600 mt-1">Penerima Manfaat (<span x-text="item.count"></span> kegiatan)</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.jenisPenyakit && selectedService.detail.jenisPenyakit.filter(p => p.jumlah > 0).length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Jenis Penyakit
+                            <span class="ml-2 text-sm font-black text-white bg-red-500 px-3 py-1 rounded-full" x-text="selectedService.detail.jenisPenyakit.filter(p => p.jumlah > 0).length"></span>
+                        </h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <template x-for="(item, idx) in selectedService.detail.jenisPenyakit.filter(p => p.jumlah > 0)" :key="idx">
+                                <div class="bg-gradient-to-r from-red-50 to-red-100 rounded-xl p-4 border-l-4 border-red-500">
+                                    <p class="text-xs font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                    <p class="text-xl font-black text-red-600" x-text="item.jumlah.toLocaleString('id-ID')"></p>
+                                    <p class="text-xs text-gray-600">Kasus</p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.jenisBantuanFood && selectedService.detail.jenisBantuanFood.filter(p => p.jumlah > 0).length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Jenis Bantuan Food Item
+                            <span class="ml-2 text-sm font-black text-white bg-teal-500 px-3 py-1 rounded-full" x-text="selectedService.detail.jenisBantuanFood.filter(p => p.jumlah > 0).length"></span>
+                        </h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <template x-for="(item, idx) in selectedService.detail.jenisBantuanFood.filter(p => p.jumlah > 0)" :key="idx">
+                                <div class="bg-gradient-to-r from-teal-50 to-teal-100 rounded-xl p-4 border-l-4 border-teal-500">
+                                    <p class="text-xs font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                    <p class="text-xl font-black text-teal-600" x-text="item.jumlah.toLocaleString('id-ID')"></p>
+                                    <p class="text-xs text-gray-600" x-text="item.satuan"></p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <template x-if="selectedService?.detail?.jenisBantuanNonFood && selectedService.detail.jenisBantuanNonFood.filter(p => p.jumlah > 0).length > 0">
+                    <div>
+                        <h4 class="text-lg font-bold text-gray-800 mb-2 flex items-center">
+                            Jenis Bantuan Non Food Item
+                            <span class="ml-2 text-sm font-black text-white bg-indigo-500 px-3 py-1 rounded-full" x-text="selectedService.detail.jenisBantuanNonFood.filter(p => p.jumlah > 0).length"></span>
+                        </h4>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+                            <template x-for="(item, idx) in selectedService.detail.jenisBantuanNonFood.filter(p => p.jumlah > 0)" :key="idx">
+                                <div class="bg-gradient-to-r from-indigo-50 to-indigo-100 rounded-xl p-4 border-l-4 border-indigo-500">
+                                    <p class="text-xs font-semibold text-gray-700 mb-1" x-text="item.name"></p>
+                                    <p class="text-xl font-black text-indigo-600" x-text="item.jumlah.toLocaleString('id-ID')"></p>
+                                    <p class="text-xs text-gray-600" x-text="item.satuan"></p>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+            </div>
+        </div>
+    </div>
+
     <script>
         document.addEventListener('alpine:init', () => {
             Alpine.data('dashboard', () => ({
@@ -837,11 +1189,15 @@
                 apiPosko: '/pmi/posko',
                 apiGiat: '/pmi/giat',
                 apiShelter: '/kobo/shelter',
+                apiService: '/kobo/service',
                 lastUpdate: '',
                 isLoading: true,
                 isLoadingMap: true,
                 isLoadingGiat: true,
                 isLoadingShelter: true,
+                isLoadingService: true,
+                showDetailModal: false,
+                selectedService: null,
                 stats: {
                     meninggalTotal: 0,
                     hilang: 0,
@@ -877,6 +1233,7 @@
                     pengungsiUsia: [],
                     pengungsiRentan: []
                 },
+                serviceData: [],
                 giatList: [],
                 poskoMarkers: [],
                 markerRotationStarted: false,
@@ -884,6 +1241,9 @@
                 chartPengungsiKabKota: null,
                 chartPengungsiUsia: null,
                 chartPengungsiRentan: null,
+                chartTopLayanan: null,
+                chartDistribusiLayanan: null,
+                chartsRendered: false,
                 
                 updateClock() {
                     const now = new Date();
@@ -923,6 +1283,76 @@
                         (this.stats.jembatanRusak || 0)
                     );
                 },
+
+                getServiceBorderClass(id) {
+                    const classes = {
+                        'pertolongan_pertama': 'border-red-500',
+                        'evakuasi_korban': 'border-blue-500',
+                        'shelter': 'border-purple-500',
+                        'medis': 'border-green-500',
+                        'tim_ambulans': 'border-orange-500',
+                        'dapur_umum': 'border-yellow-500',
+                        'relief_distribusi': 'border-indigo-500',
+                        'wash': 'border-cyan-500',
+                        'pemulihan_hubungan': 'border-pink-500',
+                        'dukungan_psikososial': 'border-teal-500'
+                    };
+                    return classes[id] || 'border-gray-500';
+                },
+
+                getServiceBgClass(id) {
+                    const classes = {
+                        'pertolongan_pertama': 'bg-red-100',
+                        'evakuasi_korban': 'bg-blue-100',
+                        'shelter': 'bg-purple-100',
+                        'medis': 'bg-green-100',
+                        'tim_ambulans': 'bg-orange-100',
+                        'dapur_umum': 'bg-yellow-100',
+                        'relief_distribusi': 'bg-indigo-100',
+                        'wash': 'bg-cyan-100',
+                        'pemulihan_hubungan': 'bg-pink-100',
+                        'dukungan_psikososial': 'bg-teal-100'
+                    };
+                    return classes[id] || 'bg-gray-100';
+                },
+
+                hasDetailData(detail) {
+                    if (!detail) return false;
+                    
+                    for (let key in detail) {
+                        if (Array.isArray(detail[key]) && detail[key].length > 0) {
+                            if (key === 'jenisPenyakit' || key === 'jenisBantuanFood' || key === 'jenisBantuanNonFood') {
+                                const hasNonZero = detail[key].some(item => item.jumlah > 0);
+                                if (hasNonZero) return true;
+                            } else {
+                                return true;
+                            }
+                        }
+                    }
+                    return false;
+                },
+
+                countDetailItems(detail) {
+                    if (!detail) return 0;
+                    
+                    let count = 0;
+                    for (let key in detail) {
+                        if (Array.isArray(detail[key])) {
+                            if (key === 'jenisPenyakit' || key === 'jenisBantuanFood' || key === 'jenisBantuanNonFood') {
+                                count += detail[key].filter(item => item.jumlah > 0).length;
+                            } else {
+                                count += detail[key].length;
+                            }
+                        }
+                    }
+                    return count;
+                },
+
+                openDetailModal(service) {
+                    this.selectedService = service;
+                    this.showDetailModal = true;
+                },
+
                 async fetchData() {
                     try {
                         const res = await fetch(this.baseUrl + this.apiLatest, { cache: 'no-store' });
@@ -952,10 +1382,10 @@
                         }
                         this.isLoading = false;
                     } catch (e) {
-                        console.error('Gagal fetch data BNPB:', e);
                         this.isLoading = false;
                     }
                 },
+                
                 async fetchShelter() {
                     try {
                         const res = await fetch(this.baseUrl + this.apiShelter, { cache: 'no-store' });
@@ -966,16 +1396,32 @@
                         this.shelterData = json.data;
                         this.isLoadingShelter = false;
                         
-                        this.$nextTick(() => {
-                            this.renderCharts();
-                        });
+                        await this.$nextTick();
+                        this.renderShelterCharts();
                     } catch (e) {
-                        console.error('Gagal fetch data shelter:', e);
                         this.isLoadingShelter = false;
                     }
                 },
-                renderCharts() {
-                    // Chart: Pengungsi per Kab/Kota
+                
+                async fetchService() {
+                    try {
+                        const res = await fetch(this.baseUrl + this.apiService, { cache: 'no-store' });
+                        if (!res.ok) return;
+                        const json = await res.json();
+                        
+                        this.serviceData = json;
+                        this.isLoadingService = false;
+                        
+                        await this.$nextTick();
+                        setTimeout(() => {
+                            this.renderServiceCharts();
+                        }, 100);
+                    } catch (e) {
+                        this.isLoadingService = false;
+                    }
+                },
+                
+                renderShelterCharts() {
                     const ctxKabKota = document.getElementById('chartPengungsiKabKota');
                     if (ctxKabKota && this.shelterData.pengungsiPerKabKota.length > 0) {
                         if (this.chartPengungsiKabKota) {
@@ -998,19 +1444,10 @@
                                 responsive: true,
                                 maintainAspectRatio: true,
                                 plugins: {
-                                    legend: {
-                                        display: false
-                                    },
+                                    legend: { display: false },
                                     tooltip: {
                                         backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                         padding: 12,
-                                        titleFont: {
-                                            size: 14,
-                                            weight: 'bold'
-                                        },
-                                        bodyFont: {
-                                            size: 13
-                                        },
                                         callbacks: {
                                             label: function(context) {
                                                 return 'Pengungsi: ' + context.parsed.y.toLocaleString('id-ID') + ' jiwa';
@@ -1025,14 +1462,6 @@
                                             callback: function(value) {
                                                 return value.toLocaleString('id-ID');
                                             }
-                                        },
-                                        grid: {
-                                            color: 'rgba(0, 0, 0, 0.05)'
-                                        }
-                                    },
-                                    x: {
-                                        grid: {
-                                            display: false
                                         }
                                     }
                                 }
@@ -1040,7 +1469,6 @@
                         });
                     }
 
-                    // Chart: Pengungsi berdasarkan Usia (Pie/Doughnut)
                     const ctxUsia = document.getElementById('chartPengungsiUsia');
                     if (ctxUsia && this.shelterData.pengungsiUsia.length > 0) {
                         if (this.chartPengungsiUsia) {
@@ -1057,56 +1485,19 @@
                                         'rgba(16, 185, 129, 0.8)',
                                         'rgba(251, 191, 36, 0.8)',
                                         'rgba(239, 68, 68, 0.8)'
-                                    ],
-                                    borderColor: [
-                                        'rgba(59, 130, 246, 1)',
-                                        'rgba(16, 185, 129, 1)',
-                                        'rgba(251, 191, 36, 1)',
-                                        'rgba(239, 68, 68, 1)'
-                                    ],
-                                    borderWidth: 2
+                                    ]
                                 }]
                             },
                             options: {
                                 responsive: true,
                                 maintainAspectRatio: true,
                                 plugins: {
-                                    legend: {
-                                        position: 'bottom',
-                                        labels: {
-                                            padding: 15,
-                                            font: {
-                                                size: 12,
-                                                weight: 'bold'
-                                            }
-                                        }
-                                    },
-                                    tooltip: {
-                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                                        padding: 12,
-                                        titleFont: {
-                                            size: 14,
-                                            weight: 'bold'
-                                        },
-                                        bodyFont: {
-                                            size: 13
-                                        },
-                                        callbacks: {
-                                            label: function(context) {
-                                                const label = context.label || '';
-                                                const value = context.parsed || 0;
-                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
-                                                const percentage = ((value / total) * 100).toFixed(1);
-                                                return label + ': ' + value.toLocaleString('id-ID') + ' (' + percentage + '%)';
-                                            }
-                                        }
-                                    }
+                                    legend: { position: 'bottom' }
                                 }
                             }
                         });
                     }
 
-                    // Chart: Pengungsi Rentan (Bar)
                     const ctxRentan = document.getElementById('chartPengungsiRentan');
                     if (ctxRentan && this.shelterData.pengungsiRentan.length > 0) {
                         if (this.chartPengungsiRentan) {
@@ -1120,32 +1511,79 @@
                                     label: 'Jumlah',
                                     data: this.shelterData.pengungsiRentan.map(d => d.value),
                                     backgroundColor: 'rgba(245, 158, 11, 0.8)',
-                                    borderColor: 'rgba(245, 158, 11, 1)',
+                                    borderRadius: 8
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                indexAxis: 'y',
+                                plugins: { legend: { display: false } }
+                            }
+                        });
+                    }
+                },
+                
+                renderServiceCharts() {
+                    if (this.chartsRendered) return;
+                    
+                    const ctxTop = document.getElementById('chartTopLayanan');
+                    const ctxDist = document.getElementById('chartDistribusiLayanan');
+                    
+                    if (!ctxTop || !ctxDist || !this.serviceData || this.serviceData.length === 0) {
+                        return;
+                    }
+
+                    try {
+                        const topServices = [...this.serviceData]
+                            .sort((a, b) => b.penerimaManfaat - a.penerimaManfaat)
+                            .slice(0, 5);
+
+                        if (this.chartTopLayanan) {
+                            this.chartTopLayanan.destroy();
+                            this.chartTopLayanan = null;
+                        }
+                        if (this.chartDistribusiLayanan) {
+                            this.chartDistribusiLayanan.destroy();
+                            this.chartDistribusiLayanan = null;
+                        }
+
+                        this.chartTopLayanan = new Chart(ctxTop, {
+                            type: 'bar',
+                            data: {
+                                labels: topServices.map(s => s.value),
+                                datasets: [{
+                                    label: 'Penerima Manfaat',
+                                    data: topServices.map(s => s.penerimaManfaat),
+                                    backgroundColor: [
+                                        'rgba(239, 68, 68, 0.8)',
+                                        'rgba(59, 130, 246, 0.8)',
+                                        'rgba(16, 185, 129, 0.8)',
+                                        'rgba(251, 191, 36, 0.8)',
+                                        'rgba(139, 92, 246, 0.8)'
+                                    ],
+                                    borderColor: [
+                                        'rgba(239, 68, 68, 1)',
+                                        'rgba(59, 130, 246, 1)',
+                                        'rgba(16, 185, 129, 1)',
+                                        'rgba(251, 191, 36, 1)',
+                                        'rgba(139, 92, 246, 1)'
+                                    ],
                                     borderWidth: 2,
                                     borderRadius: 8
                                 }]
                             },
                             options: {
                                 responsive: true,
-                                maintainAspectRatio: true,
+                                maintainAspectRatio: false,
                                 indexAxis: 'y',
                                 plugins: {
-                                    legend: {
-                                        display: false
-                                    },
+                                    legend: { display: false },
                                     tooltip: {
                                         backgroundColor: 'rgba(0, 0, 0, 0.8)',
                                         padding: 12,
-                                        titleFont: {
-                                            size: 14,
-                                            weight: 'bold'
-                                        },
-                                        bodyFont: {
-                                            size: 13
-                                        },
                                         callbacks: {
                                             label: function(context) {
-                                                return 'Jumlah: ' + context.parsed.x.toLocaleString('id-ID') + ' jiwa';
+                                                return 'Penerima: ' + context.parsed.x.toLocaleString('id-ID') + ' jiwa';
                                             }
                                         }
                                     }
@@ -1157,21 +1595,72 @@
                                             callback: function(value) {
                                                 return value.toLocaleString('id-ID');
                                             }
-                                        },
-                                        grid: {
-                                            color: 'rgba(0, 0, 0, 0.05)'
-                                        }
-                                    },
-                                    y: {
-                                        grid: {
-                                            display: false
                                         }
                                     }
                                 }
                             }
                         });
+
+                        const colors = [
+                            'rgba(239, 68, 68, 0.8)',
+                            'rgba(59, 130, 246, 0.8)',
+                            'rgba(139, 92, 246, 0.8)',
+                            'rgba(16, 185, 129, 0.8)',
+                            'rgba(251, 146, 60, 0.8)',
+                            'rgba(251, 191, 36, 0.8)',
+                            'rgba(99, 102, 241, 0.8)',
+                            'rgba(6, 182, 212, 0.8)',
+                            'rgba(236, 72, 153, 0.8)',
+                            'rgba(20, 184, 166, 0.8)'
+                        ];
+
+                        this.chartDistribusiLayanan = new Chart(ctxDist, {
+                            type: 'doughnut',
+                            data: {
+                                labels: this.serviceData.map(s => s.value),
+                                datasets: [{
+                                    data: this.serviceData.map(s => s.count),
+                                    backgroundColor: colors,
+                                    borderColor: colors.map(c => c.replace('0.8', '1')),
+                                    borderWidth: 2
+                                }]
+                            },
+                            options: {
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            padding: 10,
+                                            font: {
+                                                size: 11,
+                                                weight: 'bold'
+                                            }
+                                        }
+                                    },
+                                    tooltip: {
+                                        backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                                        padding: 12,
+                                        callbacks: {
+                                            label: function(context) {
+                                                const label = context.label || '';
+                                                const value = context.parsed || 0;
+                                                const total = context.dataset.data.reduce((a, b) => a + b, 0);
+                                                const percentage = ((value / total) * 100).toFixed(1);
+                                                return label + ': ' + value + ' kegiatan (' + percentage + '%)';
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                        });
+
+                        this.chartsRendered = true;
+                    } catch (error) {
                     }
                 },
+                
                 async fetchPosko() {
                     try {
                         const res = await fetch(this.baseUrl + this.apiPosko, { cache: 'no-store' });
@@ -1192,10 +1681,8 @@
                             marker.bindPopup(`
                                 <div class="p-5" style="min-width: 320px; font-family: Inter;">
                                     <div class="flex items-center space-x-3 mb-4 pb-3 border-b-2 border-red-600">
-                                        <div class="w-12 h-12 bg-red-100 rounded-xl flex items-center justify-center">
-                                            <svg class="w-6 h-6 text-red-600" fill="currentColor" viewBox="0 0 20 20">
-                                                <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z"/>
-                                            </svg>
+                                        <div class="w-12 h-12 flex items-center justify-center">
+                                            <img src="https://pmisumut.org/assets/img/favicon.png" alt="Logo" class="w-12 h-12 rounded-lg">
                                         </div>
                                         <h3 class="font-black text-gray-900 text-xl">${posko.kabKota || ''}</h3>
                                     </div>
@@ -1218,10 +1705,10 @@
                         this.startMarkerRotation();
                         this.isLoadingMap = false;
                     } catch (e) {
-                        console.error('Gagal fetch posko PMI:', e);
                         this.isLoadingMap = false;
                     }
                 },
+                
                 async fetchGiat() {
                     try {
                         const res = await fetch(this.baseUrl + this.apiGiat, { cache: 'no-store' });
@@ -1232,10 +1719,10 @@
                         this.scrollGiatToBottom();
                         this.isLoadingGiat = false;
                     } catch (e) {
-                        console.error('Gagal fetch giat PMI:', e);
                         this.isLoadingGiat = false;
                     }
                 },
+                
                 scrollGiatToBottom() {
                     this.$nextTick(() => {
                         const el = this.$refs.giatContainer;
@@ -1244,6 +1731,7 @@
                         }
                     });
                 },
+                
                 startMarkerRotation() {
                     if (this.markerRotationStarted || this.poskoMarkers.length === 0) {
                         if (!this.markerRotationStarted && this.poskoMarkers.length > 0) {
@@ -1260,6 +1748,7 @@
                         this.poskoMarkers[this.markerRotationIndex].openPopup();
                     }, 5000);
                 },
+                
                 init() {
                     this.updateClock();
                     setInterval(() => {
@@ -1268,14 +1757,16 @@
                     
                     this.fetchData();
                     this.fetchShelter();
+                    this.fetchService();
                     this.fetchPosko();
                     this.fetchGiat();
+                    
                     setInterval(() => {
                         this.fetchData();
                         this.fetchShelter();
                         this.fetchPosko();
                         this.fetchGiat();
-                    }, 600000);
+                    }, 60000);
                 }
             }));
         });

@@ -100,6 +100,7 @@ interface DetailItem {
     name: string;
     count: number;
     penerimaManfaat: number;
+    jumlah?: string; // Optional: untuk WASH sub layanan dengan liter
 }
 
 interface BantuanItem {
@@ -115,7 +116,6 @@ interface PenyakitItem {
 
 interface ServiceDetail {
     subLayanan?: DetailItem[];
-    saluranKegiatan?: DetailItem[];
     saluranDistribusi?: DetailItem[];
     jenisBantuanFood?: BantuanItem[];
     jenisBantuanNonFood?: BantuanItem[];
@@ -526,6 +526,15 @@ export class KoboService {
             return result;
         };
 
+        // Helper untuk WASH sub layanan (dengan tracking liter)
+        const initWashSubCategory = (definitions: Record<string, string>) => {
+            const result: Record<string, { count: number; penerimaManfaat: number; totalLiter: number }> = {};
+            Object.keys(definitions).forEach(key => {
+                result[key] = { count: 0, penerimaManfaat: 0, totalLiter: 0 };
+            });
+            return result;
+        };
+
         const initBantuanCategory = (definitions: Record<string, string>) => {
             const result: Record<string, { jumlah: number; satuan: string }> = {};
             Object.keys(definitions).forEach(key => {
@@ -552,7 +561,6 @@ export class KoboService {
                 jumlah: null,
                 jenisKelamin: { lakiLaki: 0, perempuan: 0, total: 0 },
                 usia: { kurangDari5: 0, antara5Hingga17: 0, antara18Hingga60: 0, lebihDari60: 0 },
-                _statusRujukan: initSubCategory(statusRujukanDefinitions),
             },
             evakuasi_korban: {
                 id: 'evakuasi_korban',
@@ -583,7 +591,6 @@ export class KoboService {
                 usia: { kurangDari5: 0, antara5Hingga17: 0, antara18Hingga60: 0, lebihDari60: 0 },
                 _subLayanan: initSubCategory(subLayananDefinitions.medis),
                 _jenisPenyakit: initPenyakitCategory(jenisPenyakitDefinitions),
-                _statusRujukan: initSubCategory(statusRujukanDefinitions),
             },
             tim_ambulans: {
                 id: 'tim_ambulans',
@@ -627,7 +634,7 @@ export class KoboService {
                 jenisKelamin: { lakiLaki: 0, perempuan: 0, total: 0 },
                 usia: { kurangDari5: 0, antara5Hingga17: 0, antara18Hingga60: 0, lebihDari60: 0 },
                 _totalLiter: 0,
-                _subLayanan: initSubCategory(subLayananDefinitions.wash),
+                _subLayanan: initWashSubCategory(subLayananDefinitions.wash),
                 _saluranKegiatan: initSubCategory(saluranKegiatanDefinitions),
             },
             pemulihan_hubungan: {
@@ -682,10 +689,19 @@ export class KoboService {
             layanan.usia.lebihDari60 += this.toNumber(record['pen_man_usia_laki/usia_60l']) + 
                                          this.toNumber(record['pen_man_usia_perempuan/usia_60p']);
 
-            // Sub layanan
-            if (record.sub_layanan && layanan._subLayanan && layanan._subLayanan[record.sub_layanan]) {
+            // Sub layanan (non-WASH)
+            if (jenisLayanan !== 'wash' && record.sub_layanan && layanan._subLayanan && layanan._subLayanan[record.sub_layanan]) {
                 layanan._subLayanan[record.sub_layanan].count++;
                 layanan._subLayanan[record.sub_layanan].penerimaManfaat += totalManfaat;
+            }
+
+            // Sub layanan WASH (dengan tracking liter)
+            if (jenisLayanan === 'wash' && record.sub_layanan && layanan._subLayanan && layanan._subLayanan[record.sub_layanan]) {
+                layanan._subLayanan[record.sub_layanan].count++;
+                layanan._subLayanan[record.sub_layanan].penerimaManfaat += totalManfaat;
+                if (jmlBrgUnit > 0) {
+                    layanan._subLayanan[record.sub_layanan].totalLiter += jmlBrgUnit;
+                }
             }
 
             // Saluran kegiatan
@@ -759,29 +775,36 @@ export class KoboService {
             // Sub layanan - always include
             if (layanan._subLayanan) {
                 const subLayananDef = subLayananDefinitions[key as keyof typeof subLayananDefinitions];
-                detail.subLayanan = Object.entries(layanan._subLayanan).map(
-                    ([k, v]: [string, any]) => ({
-                        name: subLayananDef?.[k] || k,
-                        count: v.count,
-                        penerimaManfaat: v.penerimaManfaat,
-                    })
-                );
+                
+                // Special handling for WASH (with liter info)
+                if (key === 'wash') {
+                    detail.subLayanan = Object.entries(layanan._subLayanan).map(
+                        ([k, v]: [string, any]) => {
+                            const item: DetailItem = {
+                                name: subLayananDef?.[k] || k,
+                                count: v.count,
+                                penerimaManfaat: v.penerimaManfaat,
+                            };
+                            // Add jumlah if there's liter data
+                            if (v.totalLiter > 0) {
+                                item.jumlah = `${v.totalLiter.toLocaleString('id-ID')} liter`;
+                            }
+                            return item;
+                        }
+                    );
+                } else {
+                    detail.subLayanan = Object.entries(layanan._subLayanan).map(
+                        ([k, v]: [string, any]) => ({
+                            name: subLayananDef?.[k] || k,
+                            count: v.count,
+                            penerimaManfaat: v.penerimaManfaat,
+                        })
+                    );
+                }
             }
             delete layanan._subLayanan;
 
-            // Saluran kegiatan - always include
-            if (layanan._saluranKegiatan) {
-                detail.saluranKegiatan = Object.entries(layanan._saluranKegiatan).map(
-                    ([k, v]: [string, any]) => ({
-                        name: saluranKegiatanDefinitions[k] || k,
-                        count: v.count,
-                        penerimaManfaat: v.penerimaManfaat,
-                    })
-                );
-            }
-            delete layanan._saluranKegiatan;
-
-            // Status rujukan - always include
+            // Status rujukan - always include if exists
             if (layanan._statusRujukan) {
                 detail.statusRujukan = Object.entries(layanan._statusRujukan).map(
                     ([k, v]: [string, any]) => ({
