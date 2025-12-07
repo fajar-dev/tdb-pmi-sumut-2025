@@ -435,164 +435,194 @@
             </div>
         </div>
 
-        <div class="mb-10">
-            <div class="flex items-center justify-between mb-6">
-                <h2 class="text-3xl font-black text-gray-900 flex items-center">
-                    <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mr-4">
-                        <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                    </div>
-                    Data Pengungsi & Shelter
-                </h2>
+<div class="mb-10">
+    <!-- HEADER -->
+    <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-6 gap-3">
+        <h2 class="text-xl sm:text-3xl font-black text-gray-900 flex items-center">
+            <div class="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center mr-4">
+                <svg class="w-6 h-6 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                </svg>
             </div>
+            <span class="leading-tight">Data Pengungsi & Shelter</span>
+        </h2>
+    </div>
 
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-6">
-                <template x-if="isLoadingShelter">
-                    <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-                        <template x-for="i in 5" :key="i">
-                            <div class="bg-white rounded-3xl shadow-xl p-7 border-t-[6px] border-gray-300">
-                                <div class="flex flex-col items-center text-center">
-                                    <div class="skeleton w-16 h-16 rounded-2xl mb-4"></div>
-                                    <div class="skeleton h-4 w-24 mb-3 rounded"></div>
-                                    <div class="skeleton h-12 w-20 mb-2 rounded"></div>
-                                    <div class="skeleton h-4 w-16 rounded"></div>
-                                </div>
-                            </div>
-                        </template>
-                    </div>
-                </template>
-
-                <template x-if="!isLoadingShelter">
-                    <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
-                        <div class="facility-card gradient-bg from-indigo-500 via-indigo-600 to-indigo-700 rounded-3xl shadow-2xl p-8 text-white">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-20 h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mb-4 shadow-xl">
-                                    <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-sm font-bold mb-3 opacity-90">Total Pengungsi (Jiwa)</h3>
-                                <p class="text-6xl font-black mb-2" x-text="shelterData.totalPengungsi.jiwa.toLocaleString('id-ID')"></p>
-                                <p class="text-xs font-semibold opacity-80 uppercase tracking-wide">Jiwa</p>
-                            </div>
-                        </div>
-
-                        <div class="facility-card bg-white rounded-3xl shadow-xl p-8 border-t-[6px] border-indigo-400 hover:shadow-2xl">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <svg class="w-9 h-9 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xs font-bold text-indigo-600 mb-3 uppercase tracking-wide">Kepala Keluarga</h3>
-                                <p class="text-5xl font-black text-indigo-600 mb-2" x-text="shelterData.totalPengungsi.kk.toLocaleString('id-ID')"></p>
-                                <p class="text-xs text-gray-500 font-semibold">KK</p>
-                            </div>
-                        </div>
-
-                        <div class="facility-card bg-white rounded-3xl shadow-xl p-8 border-t-[6px] border-blue-400 hover:shadow-2xl">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <svg class="w-9 h-9 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xs font-bold text-blue-600 mb-3 uppercase tracking-wide">Laki-laki</h3>
-                                <p class="text-5xl font-black text-blue-600 mb-2" x-text="shelterData.totalPengungsi.laki.toLocaleString('id-ID')"></p>
-                                <p class="text-xs text-gray-500 font-semibold">Jiwa</p>
-                            </div>
-                        </div>
-
-                        <div class="facility-card bg-white rounded-3xl shadow-xl p-8 border-t-[6px] border-pink-400 hover:shadow-2xl">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-pink-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <svg class="w-9 h-9 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xs font-bold text-pink-600 mb-3 uppercase tracking-wide">Perempuan</h3>
-                                <p class="text-5xl font-black text-pink-600 mb-2" x-text="shelterData.totalPengungsi.perempuan.toLocaleString('id-ID')"></p>
-                                <p class="text-xs text-gray-500 font-semibold">Jiwa</p>
-                            </div>
-                        </div>
-
-                        <div class="facility-card bg-white rounded-3xl shadow-xl p-8 border-t-[6px] border-amber-400 hover:shadow-2xl">
-                            <div class="flex flex-col items-center text-center">
-                                <div class="w-16 h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-4">
-                                    <svg class="w-9 h-9 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
-                                    </svg>
-                                </div>
-                                <h3 class="text-xs font-bold text-amber-600 mb-3 uppercase tracking-wide">Rentan</h3>
-                                <p class="text-5xl font-black text-amber-600 mb-2" x-text="shelterData.totalPengungsi.rentan.toLocaleString('id-ID')"></p>
-                                <p class="text-xs text-gray-500 font-semibold">Jiwa</p>
-                            </div>
+    <!-- GRID KARTU AGREGAT -->
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5 mb-6">
+        <!-- Loading skeleton -->
+        <template x-if="isLoadingShelter">
+            <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+                <template x-for="i in 5" :key="i">
+                    <div class="bg-white rounded-3xl shadow-xl p-6 sm:p-7 border-t-[6px] border-gray-300">
+                        <div class="flex flex-col items-center text-center">
+                            <div class="skeleton w-16 h-16 rounded-2xl mb-4"></div>
+                            <div class="skeleton h-4 w-24 mb-3 rounded"></div>
+                            <div class="skeleton h-10 w-20 mb-2 rounded"></div>
+                            <div class="skeleton h-4 w-16 rounded"></div>
                         </div>
                     </div>
                 </template>
             </div>
+        </template>
 
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
-                        <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
-                            <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+        <!-- Kartu data -->
+        <template x-if="!isLoadingShelter">
+            <div class="col-span-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-5">
+
+                <!-- Total Pengungsi -->
+                <div class="facility-card gradient-bg from-indigo-500 via-indigo-600 to-indigo-700 rounded-3xl shadow-2xl p-6 sm:p-8 text-white">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-18 h-18 sm:w-20 sm:h-20 bg-white/20 backdrop-blur rounded-2xl flex items-center justify-center mb-4 shadow-xl">
+                            <svg class="w-8 h-8 sm:w-10 sm:h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5"
+                                      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                             </svg>
                         </div>
-                        Pengungsi per Wilayah
-                    </h3>
-                    <template x-if="isLoadingShelter">
-                        <div class="skeleton h-64 rounded-2xl"></div>
-                    </template>
-                    <template x-if="!isLoadingShelter">
-                        <div>
-                            <canvas id="chartPengungsiKabKota"></canvas>
-                        </div>
-                    </template>
+                        <h3 class="text-xs sm:text-sm font-bold mb-3 opacity-90">Total Pengungsi (Jiwa)</h3>
+                        <p class="text-3xl sm:text-5xl lg:text-6xl font-black mb-2"
+                           x-text="shelterData.totalPengungsi.jiwa.toLocaleString('id-ID')"></p>
+                        <p class="text-[10px] sm:text-xs font-semibold opacity-80 uppercase tracking-wide">Jiwa</p>
+                    </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
-                        <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
-                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                <!-- KK -->
+                <div class="facility-card bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-t-[6px] border-indigo-400 hover:shadow-2xl">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-indigo-100 rounded-2xl flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 sm:w-9 sm:h-9 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/>
                             </svg>
                         </div>
-                        Distribusi Usia
-                    </h3>
-                    <template x-if="isLoadingShelter">
-                        <div class="skeleton h-64 rounded-2xl"></div>
-                    </template>
-                    <template x-if="!isLoadingShelter">
-                        <div class="flex justify-center">
-                            <canvas id="chartPengungsiUsia" style="max-height: 280px;"></canvas>
-                        </div>
-                    </template>
+                        <h3 class="text-[11px] sm:text-xs font-bold text-indigo-600 mb-3 uppercase tracking-wide">Kepala Keluarga</h3>
+                        <p class="text-2xl sm:text-4xl lg:text-5xl font-black text-indigo-600 mb-2"
+                           x-text="shelterData.totalPengungsi.kk.toLocaleString('id-ID')"></p>
+                        <p class="text-[10px] sm:text-xs text-gray-500 font-semibold">KK</p>
+                    </div>
                 </div>
 
-                <div class="bg-white rounded-3xl shadow-2xl p-8">
-                    <h3 class="text-xl font-black text-gray-900 mb-6 flex items-center">
-                        <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
-                            <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                <!-- Laki-laki -->
+                <div class="facility-card bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-t-[6px] border-blue-400 hover:shadow-2xl">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-blue-100 rounded-2xl flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 sm:w-9 sm:h-9 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
                             </svg>
                         </div>
-                        Kelompok Rentan
-                    </h3>
-                    <template x-if="isLoadingShelter">
-                        <div class="skeleton h-64 rounded-2xl"></div>
-                    </template>
-                    <template x-if="!isLoadingShelter">
-                        <div>
-                            <canvas id="chartPengungsiRentan"></canvas>
-                        </div>
-                    </template>
+                        <h3 class="text-[11px] sm:text-xs font-bold text-blue-600 mb-3 uppercase tracking-wide">Laki-laki</h3>
+                        <p class="text-2xl sm:text-4xl lg:text-5xl font-black text-blue-600 mb-2"
+                           x-text="shelterData.totalPengungsi.laki.toLocaleString('id-ID')"></p>
+                        <p class="text-[10px] sm:text-xs text-gray-500 font-semibold">Jiwa</p>
+                    </div>
                 </div>
+
+                <!-- Perempuan -->
+                <div class="facility-card bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-t-[6px] border-pink-400 hover:shadow-2xl">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-pink-100 rounded-2xl flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 sm:w-9 sm:h-9 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-[11px] sm:text-xs font-bold text-pink-600 mb-3 uppercase tracking-wide">Perempuan</h3>
+                        <p class="text-2xl sm:text-4xl lg:text-5xl font-black text-pink-600 mb-2"
+                           x-text="shelterData.totalPengungsi.perempuan.toLocaleString('id-ID')"></p>
+                        <p class="text-[10px] sm:text-xs text-gray-500 font-semibold">Jiwa</p>
+                    </div>
+                </div>
+
+                <!-- Rentan -->
+                <div class="facility-card bg-white rounded-3xl shadow-xl p-6 sm:p-8 border-t-[6px] border-amber-400 hover:shadow-2xl">
+                    <div class="flex flex-col items-center text-center">
+                        <div class="w-14 h-14 sm:w-16 sm:h-16 bg-amber-100 rounded-2xl flex items-center justify-center mb-4">
+                            <svg class="w-7 h-7 sm:w-9 sm:h-9 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                            </svg>
+                        </div>
+                        <h3 class="text-[11px] sm:text-xs font-bold text-amber-600 mb-3 uppercase tracking-wide">Rentan</h3>
+                        <p class="text-2xl sm:text-4xl lg:text-5xl font-black text-amber-600 mb-2"
+                           x-text="shelterData.totalPengungsi.rentan.toLocaleString('id-ID')"></p>
+                        <p class="text-[10px] sm:text-xs text-gray-500 font-semibold">Jiwa</p>
+                    </div>
+                </div>
+
             </div>
+        </template>
+    </div>
+
+    <!-- GRID CHART -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+        <!-- Pengungsi per Wilayah -->
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
+            <h3 class="text-base sm:text-xl font-black text-gray-900 mb-6 flex items-center">
+                <div class="w-8 h-8 bg-indigo-100 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-indigo-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                Pengungsi per Wilayah
+            </h3>
+            <template x-if="isLoadingShelter">
+                <div class="skeleton h-64 rounded-2xl"></div>
+            </template>
+            <template x-if="!isLoadingShelter">
+                <div class="relative w-full h-64 sm:h-72 overflow-x-auto">
+                    <canvas id="chartPengungsiKabKota" class="w-full h-full"></canvas>
+                </div>
+            </template>
         </div>
+
+        <!-- Distribusi Usia -->
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
+            <h3 class="text-base sm:text-xl font-black text-gray-900 mb-6 flex items-center">
+                <div class="w-8 h-8 bg-blue-100 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M20.488 9H15V3.512A9.025 9.025 0 0120.488 9z"/>
+                    </svg>
+                </div>
+                Distribusi Usia
+            </h3>
+            <template x-if="isLoadingShelter">
+                <div class="skeleton h-64 rounded-2xl"></div>
+            </template>
+            <template x-if="!isLoadingShelter">
+                <div class="relative flex justify-center w-full h-64 sm:h-72">
+                    <canvas id="chartPengungsiUsia" class="w-full max-w-xs sm:max-w-sm h-full"></canvas>
+                </div>
+            </template>
+        </div>
+
+        <!-- Kelompok Rentan -->
+        <div class="bg-white rounded-3xl shadow-2xl p-6 sm:p-8">
+            <h3 class="text-base sm:text-xl font-black text-gray-900 mb-6 flex items-center">
+                <div class="w-8 h-8 bg-amber-100 rounded-lg flex items-center justify-center mr-3">
+                    <svg class="w-5 h-5 text-amber-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/>
+                    </svg>
+                </div>
+                Kelompok Rentan
+            </h3>
+            <template x-if="isLoadingShelter">
+                <div class="skeleton h-64 rounded-2xl"></div>
+            </template>
+            <template x-if="!isLoadingShelter">
+                <div class="relative w-full h-64 sm:h-72 overflow-x-auto">
+                    <canvas id="chartPengungsiRentan" class="w-full h-full"></canvas>
+                </div>
+            </template>
+        </div>
+    </div>
+</div>
+
 
         <div class="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-10">
             <div class="lg:col-span-3 bg-white rounded-3xl shadow-2xl p-8">
