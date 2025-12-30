@@ -68,6 +68,14 @@ document.addEventListener('alpine:init', () => {
         
         updateClock() {
             const now = new Date();
+
+            const utcTime = now.getTime() + (now.getTimezoneOffset() * 60000);
+            document.getElementById('clockUTC').textContent = new Date(utcTime).toLocaleTimeString('id-ID', { 
+                hour: '2-digit', 
+                minute: '2-digit', 
+                second: '2-digit',
+                hour12: false 
+            });
             
             const wibTime = new Date(now.toLocaleString('en-US', { timeZone: 'Asia/Jakarta' }));
             document.getElementById('clockWIB').textContent = wibTime.toLocaleTimeString('id-ID', { 
@@ -350,7 +358,7 @@ document.addEventListener('alpine:init', () => {
                                 longitude: position.coords.longitude
                             };
                             
-                            const url = `https://service.pmisumut.org/api/v1/bmkg-service/weather/current?longitude=${this.userCoordinates.longitude}&latitude=${this.userCoordinates.latitude}`;
+                            const url = `https://service.pmi-tech.id/api/v1/bmkg-service/weather/current?longitude=${this.userCoordinates.longitude}&latitude=${this.userCoordinates.latitude}`;
                             
                             try {
                                 const res = await fetch(url, { 
