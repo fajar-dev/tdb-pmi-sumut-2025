@@ -6,6 +6,11 @@ document.addEventListener('alpine:init', () => {
         apiGiat: '/pmi/giat',
         apiShelter: '/kobo/shelter',
         apiService: '/kobo/service',
+        apiLayanan: '/kobo/giat',
+        isLoadingLayanan: true,
+        layananList: [],
+        currentLayananPage: 1,
+        itemsPerLayananPage: 10,
         lastUpdate: '',
         isLoading: true,
         isLoadingMap: true,
@@ -111,6 +116,46 @@ document.addEventListener('alpine:init', () => {
                 (this.stats.pendidikanRusak || 0) +
                 (this.stats.jembatanRusak || 0)
             );
+        },
+
+        get totalLayanan() {
+            return this.layananList.length;
+        },
+
+        get totalLayananPages() {
+            return Math.ceil(this.totalLayanan / this.itemsPerLayananPage);
+        },
+
+        get paginatedLayananList() {
+            const start = (this.currentLayananPage - 1) * this.itemsPerLayananPage;
+            const end = start + this.itemsPerLayananPage;
+            return this.layananList.slice(start, end);
+        },
+
+        get layananStartIndex() {
+            if (this.totalLayanan === 0) return 0;
+            return (this.currentLayananPage - 1) * this.itemsPerLayananPage + 1;
+        },
+
+        get layananEndIndex() {
+            const end = this.currentLayananPage * this.itemsPerLayananPage;
+            return Math.min(end, this.totalLayanan);
+        },
+
+        get paginationLayananPages() {
+            const pages = [];
+            const maxVisible = 5;
+            let startPage = Math.max(1, this.currentLayananPage - Math.floor(maxVisible / 2));
+            let endPage = Math.min(this.totalLayananPages, startPage + maxVisible - 1);
+            
+            if (endPage - startPage + 1 < maxVisible) {
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+            return pages;
         },
 
         getServiceBorderClass(id) {
@@ -748,7 +793,50 @@ document.addEventListener('alpine:init', () => {
                 this.poskoMarkers[this.markerRotationIndex].openPopup();
             }, 5000);
         },
-        
+
+        nextLayananPage() {
+            if (this.currentLayananPage < this.totalLayananPages) {
+                this.currentLayananPage++;
+                this.scrollToLayananTop();
+            }
+        },
+
+        prevLayananPage() {
+            if (this.currentLayananPage > 1) {
+                this.currentLayananPage--;
+                this.scrollToLayananTop();
+            }
+        },
+
+        goToLayananPage(page) {
+            this.currentLayananPage = page;
+            this.scrollToLayananTop();
+        },
+
+        scrollToLayananTop() {
+            const section = document.querySelector('h2:has-text("Giat Layanan")');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        },
+
+        async fetchLayanan() {
+            try {
+                const res = await fetch(this.baseUrl + this.apiLayanan, { cache: 'no-store' });
+                if (!res.ok) return;
+                const json = await res.json();
+                if (!json.success || !json.data) return;
+                
+                this.layananList = json.data.sort((a, b) => {
+                    return new Date(b.tanggal_kegiatan) - new Date(a.tanggal_kegiatan);
+                });
+                
+                this.isLoadingLayanan = false;
+            } catch (e) {
+                console.error('Error fetching layanan:', e);
+                this.isLoadingLayanan = false;
+            }
+        },
         init() {
             this.updateClock();
             setInterval(() => {
@@ -761,6 +849,7 @@ document.addEventListener('alpine:init', () => {
             this.fetchPosko();
             this.fetchGiat();
             this.fetchWeather();
+            this.fetchLayanan(); // TAMBAHKAN INI
             
             setInterval(() => {
                 this.fetchData();
@@ -768,6 +857,7 @@ document.addEventListener('alpine:init', () => {
                 this.fetchPosko();
                 this.fetchGiat();
                 this.fetchWeather();
+                this.fetchLayanan(); // TAMBAHKAN INI
             }, 60000);
         }
     }));

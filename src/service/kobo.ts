@@ -134,6 +134,25 @@ interface ServiceStatistic {
     detail?: ServiceDetail;
 }
 
+interface GiatDetail {
+    jenis_kelamin: {
+        laki_laki: number;
+        perempuan: number;
+    };
+    usia: {
+        kurang_dari_5: number;
+        antara_5_17: number;
+        antara_18_60: number;
+        lebih_dari_60: number;
+    };
+    // Conditional fields based on layanan type
+    jumlah?: string;
+    jenis_penyakit?: string;
+    bantuan?: string;
+    saluran_distribusi?: string;
+    [key: string]: any;
+}
+
 interface GiatData {
     jenis_layanan: string;
     sub_layanan: string;
@@ -144,7 +163,7 @@ interface GiatData {
     nama_pelapor: string;
     kab_kota_id: string;
     kab_kota_name: string;
-    detail?: any;
+    detail?: GiatDetail;
 }
 
 export class KoboService {
@@ -586,6 +605,56 @@ export class KoboService {
             const rawName = this.kabKotaDefinitions[kabKotaId];
             const kabKotaName = rawName ? `PMI ${rawName}` : kabKotaId;
 
+            const detail: GiatDetail = {
+                jenis_kelamin: {
+                    laki_laki: this.toNumber(item["jenis_kelamin/laki_laki"]),
+                    perempuan: this.toNumber(item["jenis_kelamin/perempuan"])
+                },
+                usia: {
+                    kurang_dari_5: this.toNumber(item['pen_man_usia_laki/usia_5l']) + this.toNumber(item['pen_man_usia_perempuan/usia_5p']),
+                    antara_5_17: this.toNumber(item['pen_man_usia_laki/usia5_17l']) + this.toNumber(item['pen_man_usia_perempuan/usia5_17p']),
+                    antara_18_60: this.toNumber(item['pen_man_usia_laki/usia18_60l']) + this.toNumber(item['pen_man_usia_perempuan/usia18_60p']),
+                    lebih_dari_60: this.toNumber(item['pen_man_usia_laki/usia_60l']) + this.toNumber(item['pen_man_usia_perempuan/usia_60p'])
+                }
+            };
+
+            // Conditional details
+            if (layanan === 'wash' && this.toNumber(item.jml_brg_unit) > 0) {
+                 detail.jumlah = `${this.toNumber(item.jml_brg_unit).toLocaleString('id-ID')} liter`;
+            }
+
+            if (layanan === 'relief_distribusi') {
+                // Bantuan
+                if (item.jenis_bantuan && this.toNumber(item.jml_brg_unit) > 0) {
+                     const satuAn = item.satu_an ? item.satu_an.replace(/^(.+?)_\1$/, '$1') : '';
+                     const name = this.jenisBantuanFoodDefinitions[item.jenis_bantuan] || 
+                                this.jenisBantuanNonFoodDefinitions[item.jenis_bantuan] || 
+                                item.jenis_bantuan;
+                    detail.bantuan = `${name} (${this.toNumber(item.jml_brg_unit)} ${satuAn})`;
+                }
+                // Saluran Distribusi
+                 if (item.sal_distribusi) {
+                    detail.saluran_distribusi = this.saluranDistribusiDefinitions[item.sal_distribusi] || item.sal_distribusi;
+                }
+            }
+
+            if (layanan === 'medis') {
+                const penyakitList: string[] = [];
+                Object.keys(item).forEach((key) => {
+                    if (key.startsWith('Jenis_Penyakit/')) {
+                        const penyakitKey = key.replace('Jenis_Penyakit/', '');
+                        const value = this.toNumber(item[key]);
+                        if (value > 0) {
+                            const name = this.jenisPenyakitDefinitions[penyakitKey] || penyakitKey;
+                            penyakitList.push(`${name} (${value})`);
+                        }
+                    }
+                });
+                if (penyakitList.length > 0) {
+                    detail.jenis_penyakit = penyakitList.join(', ');
+                }
+            }
+
             return {
                 kab_kota_id: kabKotaId,
                 kab_kota_name: kabKotaName,
@@ -598,95 +667,7 @@ export class KoboService {
                 lokasi_kegiatan: item.lok_keg,
                 tanggal_kegiatan: item.tanggal_keg,
                 nama_pelapor: item.nama_pelapor,
-                detail: (() => {
-                    const detail: any = {};
-
-                    // Gender breakdown
-                    const lakiLaki = this.toNumber(item["jenis_kelamin/laki_laki"]);
-                    const perempuan = this.toNumber(item["jenis_kelamin/perempuan"]);
-                    if (lakiLaki > 0 || perempuan > 0) {
-                        detail.jenis_kelamin = {
-                            laki_laki: lakiLaki,
-                            perempuan: perempuan
-                        };
-                    }
-
-                    // Age breakdown
-                    const usia5 = this.toNumber(item['pen_man_usia_laki/usia_5l']) + 
-                                  this.toNumber(item['pen_man_usia_perempuan/usia_5p']);
-                    const usia5_17 = this.toNumber(item['pen_man_usia_laki/usia5_17l']) + 
-                                     this.toNumber(item['pen_man_usia_perempuan/usia5_17p']);
-                    const usia18_60 = this.toNumber(item['pen_man_usia_laki/usia18_60l']) + 
-                                      this.toNumber(item['pen_man_usia_perempuan/usia18_60p']);
-                    const usia60 = this.toNumber(item['pen_man_usia_laki/usia_60l']) + 
-                                   this.toNumber(item['pen_man_usia_perempuan/usia_60p']);
-                    
-                    if (usia5 > 0 || usia5_17 > 0 || usia18_60 > 0 || usia60 > 0) {
-                        detail.usia = {
-                            kurang_dari_5: usia5,
-                            antara_5_17: usia5_17,
-                            antara_18_60: usia18_60,
-                            lebih_dari_60: usia60
-                        };
-                    }
-
-                    // WASH specific
-                    if (layanan === 'wash' && this.toNumber(item.jml_brg_unit) > 0) {
-                         detail.jumlah = `${this.toNumber(item.jml_brg_unit).toLocaleString('id-ID')} liter`;
-                    }
-
-                    // Relief/Distribusi specific
-                    if (layanan === 'relief_distribusi') {
-                        // Jenis Bantuan
-                        if (item.jenis_bantuan) {
-                             const cleanSatuAn = (item.satu_an || '').replace(/^(.+?)_\1$/, '$1');
-                             const bantuanName = this.jenisBantuanFoodDefinitions[item.jenis_bantuan] || 
-                                               this.jenisBantuanNonFoodDefinitions[item.jenis_bantuan] || 
-                                               item.jenis_bantuan;
-                             
-                             if (this.toNumber(item.jml_brg_unit) > 0) {
-                                  detail.bantuan = `${bantuanName} (${this.toNumber(item.jml_brg_unit).toLocaleString('id-ID')} ${cleanSatuAn})`;
-                             } else {
-                                  detail.bantuan = bantuanName;
-                             }
-                        }
-
-                        // Saluran Distribusi
-                        if (item.sal_distribusi) {
-                             detail.saluran_distribusi = this.saluranDistribusiDefinitions[item.sal_distribusi] || item.sal_distribusi;
-                        }
-                    }
-
-                    // Medis specific - Jenis Penyakit
-                    if (layanan === 'medis') {
-                        const penyakit: string[] = [];
-                        Object.keys(item).forEach((key) => {
-                            if (key.startsWith('Jenis_Penyakit/')) {
-                                const penyakitKey = key.replace('Jenis_Penyakit/', '');
-                                const value = this.toNumber(item[key]);
-                                if (value > 0) {
-                                     const name = this.jenisPenyakitDefinitions[penyakitKey] || penyakitKey;
-                                     penyakit.push(`${name} (${value})`);
-                                }
-                            }
-                        });
-                        if (penyakit.length > 0) {
-                            detail.jenis_penyakit = penyakit.join(', ');
-                        }
-                    }
-                    
-                    // Saluran Kegiatan (General)
-                    if (item.sal_kegiatan) {
-                        detail.saluran_kegiatan = this.saluranKegiatanDefinitions[item.sal_kegiatan] || item.sal_kegiatan;
-                    }
-
-                    // Status Rujukan
-                    if (item.status_rujukan) {
-                        detail.status_rujukan = this.statusRujukanDefinitions[item.status_rujukan] || item.status_rujukan;
-                    }
-
-                    return Object.keys(detail).length > 0 ? detail : undefined;
-                })(),
+                detail: detail
             };
         }).sort((a, b) => {
             const dateA = new Date(a.tanggal_kegiatan || 0).getTime();
