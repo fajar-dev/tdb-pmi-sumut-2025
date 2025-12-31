@@ -113,6 +113,18 @@ app.get("/api/kobo/shelter", async (c) => {
   }
 });
 
+app.get("/api/kobo/giat", async (c) => {
+  try {
+    const data = await KoboService.getGiatData();
+    return c.json({
+        success: true,
+        data,
+    });
+  } catch (error: any) {
+    throw error;
+  }
+});
+
 app.get("/api/kobo/service", async (c) => {
   try {
     const data = await KoboService.getServiceStatistics();
