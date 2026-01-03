@@ -67,7 +67,8 @@ document.addEventListener('alpine:init', () => {
             pengungsiRentan: []
         },
         // Service Filter States
-        filterServiceTanggal: '',
+        filterServiceStartDate: '',
+        filterServiceEndDate: '',
         filterServiceKabKota: '',
         serviceData: [],
         giatList: [],
@@ -414,7 +415,8 @@ document.addEventListener('alpine:init', () => {
         async fetchService() {
             try {
                 const params = new URLSearchParams();
-                if (this.filterServiceTanggal) params.append('date', this.filterServiceTanggal);
+                if (this.filterServiceStartDate) params.append('start_date', this.filterServiceStartDate);
+                if (this.filterServiceEndDate) params.append('end_date', this.filterServiceEndDate);
                 if (this.filterServiceKabKota) params.append('kab_kota', this.filterServiceKabKota);
                 
                 const url = `${this.baseUrl}${this.apiService}?${params.toString()}`;
@@ -900,7 +902,11 @@ document.addEventListener('alpine:init', () => {
             this.$watch('filterSubLayanan', () => this.currentLayananPage = 1);
             
             // Watchers for Service Filters (Backend)
-            this.$watch('filterServiceTanggal', () => {
+            this.$watch('filterServiceStartDate', () => {
+                this.isLoadingService = true;
+                this.fetchService();
+            });
+            this.$watch('filterServiceEndDate', () => {
                 this.isLoadingService = true;
                 this.fetchService();
             });

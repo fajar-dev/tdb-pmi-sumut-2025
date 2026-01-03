@@ -676,13 +676,17 @@ export class KoboService {
         });
     }
 
-    public static async getServiceStatistics(date?: string, kabKota?: string): Promise<ServiceStatistic[]> {
+    public static async getServiceStatistics(startDate?: string, endDate?: string, kabKota?: string): Promise<ServiceStatistic[]> {
         const data = await this.serviceData();
         let results: ServiceData[] = data.results || [];
 
         // Filter based on parameters
-        if (date) {
-            results = results.filter(item => item.tanggal_keg === date);
+        if (startDate) {
+            results = results.filter(item => item.tanggal_keg >= startDate);
+        }
+
+        if (endDate) {
+            results = results.filter(item => item.tanggal_keg <= endDate);
         }
 
         if (kabKota) {
